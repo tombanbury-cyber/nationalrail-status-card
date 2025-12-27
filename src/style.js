@@ -52,6 +52,28 @@ color: #f3f345;
 .good {
 color: #52ff52;
 }
+.train-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 5px;
+  font-size: 0.9em;
+}
+.train-metadata > span {
+  padding: 2px 8px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.operator {
+  color: #4da6ff;
+}
+.service-type {
+  color: #ffd966;
+}
+.train-length {
+  color: #b3b3b3;
+}
 `;
 
 export default style;
