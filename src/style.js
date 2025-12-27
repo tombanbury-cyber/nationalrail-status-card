@@ -1,5 +1,4 @@
 
-
 import { css } from 'lit';
 
 const style = css`
@@ -51,6 +50,17 @@ color: #f3f345;
 }
 .good {
 color: #52ff52;
+}
+.platform-group {
+  margin-bottom: 12px;
+}
+.platform-header {
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-bottom: 8px;
+  margin-top: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 `;
 
