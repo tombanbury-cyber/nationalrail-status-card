@@ -53,7 +53,7 @@ class NationalrailStatusCard extends LitElement {
     if (this._config?.limit) {
       let limit = 0;
       if (typeof this._config.limit === 'number') {
-        limit = config.limit;
+        limit = this._config.limit;
       }
       else if (typeof this._config.limit === "string") {
         limit = parseInt(this._config.limit);
