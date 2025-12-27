@@ -23,6 +23,10 @@ export default class NationalrailStatusCardEditor extends EditorForm {
     this._config = config;
   }
 
+  set hass(hass) {
+    this._hass = hass;
+  }
+
   render() {
     if (!this._hass || !this._config) {
       return html``;
@@ -32,6 +36,9 @@ export default class NationalrailStatusCardEditor extends EditorForm {
       { controls: [{ label: "Number of trains to shown", configValue: "limit", type: FormControlType.Textbox }] },
       { controls: [{ label: "Group by platform", configValue: "group_by_platform", type: FormControlType.Switch }] },
       { controls: [{ label: "Filter by platforms", configValue: "platforms", type: FormControlType.Textbox, helper: "Enter comma-separated platform numbers (e.g., 1,2,3 or 1A,2B)" }] },
+      { controls: [{ label: "Show operator", configValue: "show_operator", type: FormControlType.Switch }] },
+      { controls: [{ label: "Show service type", configValue: "show_service_type", type: FormControlType.Switch }] },
+      { controls: [{ label: "Show train length", configValue: "show_train_length", type: FormControlType.Switch }] },
     ])
   };
 }
