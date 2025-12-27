@@ -168,6 +168,10 @@ class NationalrailStatusCard extends LitElement {
 
   renderTrain(train) {
     const scheduled = parseToTime(train.scheduled);
+    const showOperator = this._config?.show_operator !== false; // default true
+    const showServiceType = this._config?.show_service_type !== false; // default true
+    const showTrainLength = this._config?.show_train_length !== false; // default true
+    
     return html`
     <div class="train">
       <div class="top-heading">
@@ -180,6 +184,21 @@ class NationalrailStatusCard extends LitElement {
           <span class="platform">${train.platform ?? "-"}</span>
         </div>
       </div>
+      
+      ${(train.operator || train.service_type || train.length) ? html`
+        <div class="train-metadata">
+          ${train.operator && showOperator ? html`
+            <span class="operator" title="Operator">${train.operator}</span>
+          ` : ''}
+          ${train.service_type && showServiceType ? html`
+            <span class="service-type" title="Service Type">${train.service_type}</span>
+          ` : ''}
+          ${train.length && showTrainLength ? html`
+            <span class="train-length" title="Train Length">${train.length} ${train.length === 1 ? 'carriage' : 'carriages'}</span>
+          ` : ''}
+        </div>
+      ` : ''}
+      
       <h3 
         id="station-heading-0" 
         tabindex="-1">

@@ -65,6 +65,37 @@ Else, if you prefer the graphical editor, use the menu to add the resource:
 
 4. Select the entity for your station and destination, and optionally choose the number of trains to display. Click Save.
 
+## Integration Compatibility
+
+This card works with the National Rail API Integration for Home Assistant:
+
+### Standard Integration
+- **Repository**: [jfparis/homeassistant_nationalrail](https://github.com/jfparis/homeassistant_nationalrail)
+- **Features**: Basic train schedule data (terminus, scheduled/expected times, platform, calling points)
+
+### Enhanced Integration ⭐ Recommended
+- **Repository**: [tombanbury-cyber/homeassistant_nationalrail](https://github.com/tombanbury-cyber/homeassistant_nationalrail)
+- **Additional Features**: 
+  - Train operator name (e.g., "Great Western Railway", "Southern")
+  - Service type information
+  - Train length (number of carriages)
+  - Fully compatible with all card features
+
+### Feature Compatibility Matrix
+
+| Card Feature | Standard Integration | Enhanced Integration |
+|--------------|:-------------------:|:-------------------:|
+| Basic train list | ✅ | ✅ |
+| Platform display | ✅ | ✅ |
+| Platform grouping | ✅ | ✅ |
+| Platform filtering | ✅ | ✅ |
+| Status indicators | ✅ | ✅ |
+| Operator display | ❌ | ✅ |
+| Service type display | ❌ | ✅ |
+| Train length display | ❌ | ✅ |
+
+**Note**: The card will automatically detect and display additional fields when using the enhanced integration. If fields are not available, they will be gracefully hidden.
+
 ### Options
 
 #### Card options
@@ -73,6 +104,28 @@ Else, if you prefer the graphical editor, use the menu to add the resource:
 | type ***(required)*** | string |  | v0.0.1 | `custom:nationalrail-status-card`.
 | entity ***(required)*** | string |  | v0.0.1 | The entity being monitored
 | limit ***(optional)*** | number |  | v0.0.1 | The maximum number of trains to show at once. If absent then defaults to the API default.
+| group_by_platform ***(optional)*** | boolean | false | v0.1.0 | Group trains by platform number
+| platforms ***(optional)*** | string |  | v0.1.0 | Filter by platforms (comma-separated, e.g. "1,2,3A")
+| show_operator ***(optional)*** | boolean | true | v0.1.0 | Show train operator name (requires enhanced integration)
+| show_service_type ***(optional)*** | boolean | true | v0.1.0 | Show service type (requires enhanced integration)
+| show_train_length ***(optional)*** | boolean | true | v0.1.0 | Show train length in carriages (requires enhanced integration)
+
+### Example Configuration
+
+#### YAML Configuration
+```yaml
+type: custom:nationalrail-status-card
+entity: sensor.train_schedule_wyb_wat
+limit: 10
+group_by_platform: true
+platforms: "1,2,3A"
+show_operator: true
+show_service_type: true
+show_train_length: true
+```
+
+#### Visual Card Editor
+All options are available in the visual editor when adding the card through the UI.
 | group_by_platform ***(optional)*** | boolean | false | v1.1.0 | When enabled, trains are grouped by platform with visual headers (e.g., "Platform 1", "Platform 2A").
 | platforms ***(optional)*** | string |  | v1.1.0 | Comma-separated list of platforms to show (e.g., "1,2,3" or "1A,2B"). If absent, all platforms are shown.
 
