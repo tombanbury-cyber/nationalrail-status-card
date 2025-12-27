@@ -73,6 +73,40 @@ Else, if you prefer the graphical editor, use the menu to add the resource:
 | type ***(required)*** | string |  | v0.0.1 | `custom:nationalrail-status-card`.
 | entity ***(required)*** | string |  | v0.0.1 | The entity being monitored
 | limit ***(optional)*** | number |  | v0.0.1 | The maximum number of trains to show at once. If absent then defaults to the API default.
+| group_by_platform ***(optional)*** | boolean | false | v1.1.0 | When enabled, trains are grouped by platform with visual headers (e.g., "Platform 1", "Platform 2A").
+| platforms ***(optional)*** | string |  | v1.1.0 | Comma-separated list of platforms to show (e.g., "1,2,3" or "1A,2B"). If absent, all platforms are shown.
+
+#### Configuration Examples
+
+##### Basic Configuration
+```yaml
+type: custom:nationalrail-status-card
+entity: sensor.train_schedule_london_waterloo
+limit: 5
+```
+
+##### With Platform Grouping
+```yaml
+type: custom:nationalrail-status-card
+entity: sensor.train_schedule_london_waterloo
+group_by_platform: true
+```
+
+##### With Platform Filtering
+```yaml
+type: custom:nationalrail-status-card
+entity: sensor.train_schedule_london_waterloo
+platforms: "1,2A,3"
+```
+
+##### Combined Features
+```yaml
+type: custom:nationalrail-status-card
+entity: sensor.train_schedule_london_waterloo
+group_by_platform: true
+platforms: "1,2,3"
+limit: 10
+```
 
 ## Development
 
