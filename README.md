@@ -126,6 +126,40 @@ show_train_length: true
 
 #### Visual Card Editor
 All options are available in the visual editor when adding the card through the UI.
+| group_by_platform ***(optional)*** | boolean | false | v1.1.0 | When enabled, trains are grouped by platform with visual headers (e.g., "Platform 1", "Platform 2A").
+| platforms ***(optional)*** | string |  | v1.1.0 | Comma-separated list of platforms to show (e.g., "1,2,3" or "1A,2B"). If absent, all platforms are shown.
+
+#### Configuration Examples
+
+##### Basic Configuration
+```yaml
+type: custom:nationalrail-status-card
+entity: sensor.train_schedule_london_waterloo
+limit: 5
+```
+
+##### With Platform Grouping
+```yaml
+type: custom:nationalrail-status-card
+entity: sensor.train_schedule_london_waterloo
+group_by_platform: true
+```
+
+##### With Platform Filtering
+```yaml
+type: custom:nationalrail-status-card
+entity: sensor.train_schedule_london_waterloo
+platforms: "1,2A,3"
+```
+
+##### Combined Features
+```yaml
+type: custom:nationalrail-status-card
+entity: sensor.train_schedule_london_waterloo
+group_by_platform: true
+platforms: "1,2,3"
+limit: 10
+```
 
 ## Development
 

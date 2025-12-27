@@ -1,5 +1,4 @@
 
-
 import { css } from 'lit';
 
 const style = css`
@@ -52,27 +51,16 @@ color: #f3f345;
 .good {
 color: #52ff52;
 }
-.train-metadata {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 5px;
-  font-size: 0.9em;
+.platform-group {
+  margin-bottom: 12px;
 }
-.train-metadata > span {
-  padding: 2px 8px;
-  border-radius: 3px;
-  background: var(--card-background-color, rgba(var(--rgb-primary-text-color, 255, 255, 255), 0.05));
-  border: 1px solid var(--divider-color, rgba(var(--rgb-primary-text-color, 255, 255, 255), 0.12));
-}
-.operator {
-  color: #4da6ff;
-}
-.service-type {
-  color: #ffd966;
-}
-.train-length {
-  color: #b3b3b3;
+.platform-header {
+  font-weight: bold;
+  font-size: 1.1em;
+  margin-bottom: 8px;
+  margin-top: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 `;
 

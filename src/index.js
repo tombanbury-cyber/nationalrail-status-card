@@ -48,8 +48,82 @@ class NationalrailStatusCard extends LitElement {
     const hassentity = this._hass.states[entityIndex]
     this.attributes = hassentity.attributes;
   }
+
+  filterByPlatforms(trains) {
+    if (!this._config?.platforms || typeof this._config.platforms !== 'string') {
+      return trains;
+    }
+    
+    const platformsStr = this._config.platforms.trim();
+    if (!platformsStr) {
+      return trains;
+    }
+    
+    const platformList = platformsStr.split(',').map(p => p.trim()).filter(p => p);
+    if (platformList.length === 0) {
+      return trains;
+    }
+    
+    return trains.filter(train => {
+      const trainPlatform = train.platform ?? '-';
+      return platformList.includes(String(trainPlatform));
+    });
+  }
+
+  groupByPlatform(trains) {
+    const grouped = new Map();
+    
+    trains.forEach(train => {
+      const platform = train.platform ?? '-';
+      if (!grouped.has(platform)) {
+        grouped.set(platform, []);
+      }
+      grouped.get(platform).push(train);
+    });
+    
+    return grouped;
+  }
+
+  sortPlatforms(platformKeys) {
+    return platformKeys.sort((a, b) => {
+      // Handle unknown/missing platforms
+      const aIsUnknown = a === '-' || a === null || a === undefined;
+      const bIsUnknown = b === '-' || b === null || b === undefined;
+      
+      if (aIsUnknown && !bIsUnknown) return 1;
+      if (!aIsUnknown && bIsUnknown) return -1;
+      if (aIsUnknown && bIsUnknown) return 0;
+      
+      // Convert to strings for comparison
+      const aStr = String(a);
+      const bStr = String(b);
+      
+      // Check if purely numeric
+      const aNum = parseInt(aStr);
+      const bNum = parseInt(bStr);
+      const aIsNumeric = !isNaN(aNum) && aStr === String(aNum);
+      const bIsNumeric = !isNaN(bNum) && bStr === String(bNum);
+      
+      if (aIsNumeric && bIsNumeric) {
+        return aNum - bNum;
+      }
+      
+      if (aIsNumeric && !bIsNumeric) return -1;
+      if (!aIsNumeric && bIsNumeric) return 1;
+      
+      // Both alphanumeric - sort alphabetically
+      return aStr.localeCompare(bStr);
+    });
+  }
   render() {
     let trains = this.attributes?.trains ?? [];
+    
+    // Apply platform filtering first
+    if (this._config?.platforms) {
+      trains = this.filterByPlatforms(trains);
+    }
+    
+    // Apply limit
     if (this._config?.limit) {
       let limit = 0;
       if (typeof this._config.limit === 'number') {
@@ -62,12 +136,25 @@ class NationalrailStatusCard extends LitElement {
         trains = trains.slice(0, limit);
       }
     }
+    
     let items = html`
     <h3>No trains scheduled</h3>
     `
+    
     if (trains && trains.length > 0) {
-      items = trains.map((train) => this.renderTrain(train));
+      if (this._config?.group_by_platform) {
+        // Group trains by platform
+        const grouped = this.groupByPlatform(trains);
+        const sortedPlatforms = this.sortPlatforms(Array.from(grouped.keys()));
+        items = sortedPlatforms.map(platform => 
+          this.renderPlatformGroup(platform, grouped.get(platform))
+        );
+      } else {
+        // Normal flat list
+        items = trains.map(train => this.renderTrain(train));
+      }
     }
+    
     return html`<ha-card>
       <div id="content">
       <div id="nationalrail-status">
@@ -120,6 +207,16 @@ class NationalrailStatusCard extends LitElement {
       <h4>Calling at ${train.destinations.map(dest => destinationPresent(dest, train.expected)).join(", ")}</h4 >
     </div >
       `
+  }
+
+  renderPlatformGroup(platform, trains) {
+    const platformLabel = platform === '-' ? 'Unknown Platform' : `Platform ${platform}`;
+    return html`
+      <div class="platform-group">
+        <div class="platform-header">${platformLabel}</div>
+        ${trains.map(train => this.renderTrain(train))}
+      </div>
+    `;
   }
 
 }
